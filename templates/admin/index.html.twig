@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Admin Dashboard</h1>
+    <form action="{{ path('admin_upload_file') }}" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Upload</button>
+    </form>
+    <ul>
+        {% for file in files %}
+            <li>
+                {{ file.name }}
+                <a href="{{ path('admin_delete_file', {id: file.id}) }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

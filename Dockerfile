@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 LABEL authors="andrz"
 
 # Instalujemy niezbędne rozszerzenia
-RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install pdo_mysql
 
 # Instalacja Xdebug
 # RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug

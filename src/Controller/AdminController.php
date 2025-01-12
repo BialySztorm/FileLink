@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class AdminController extends AbstractController
 {
@@ -27,10 +28,19 @@ class AdminController extends AbstractController
         return $this->redirectToRoute('admin_dashboard');
     }
 
-    #[Route('/admin/upload', name: 'admin_upload_file')]
+    #[Route('/admin/upload', name: 'admin_upload_file', methods: ['POST'])]
     public function upload(Request $request, EntityManagerInterface $em): Response
     {
-        // Handle file upload and save to database
+        /** @var UploadedFile $uploadedFile */
+        $uploadedFile = $request->files->get('file');
+        if ($uploadedFile) {
+            $file = new File();
+            $file->setName($uploadedFile->getClientOriginalName());
+            $file->setPath('/uploads/' . $uploadedFile->getClientOriginalName());
+            $uploadedFile->move($this->getParameter('uploads_directory'), $uploadedFile->getClientOriginalName());
+            $em->persist($file);
+            $em->flush();
+        }
         return $this->redirectToRoute('admin_dashboard');
     }
 }
