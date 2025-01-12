@@ -34,6 +34,16 @@ class File
         $this->name = $name;
     }
 
+    public function setDownloads(int $downloads)
+    {
+        $this->downloads = $downloads;
+    }
+
+    public function setExpirationDate(\DateTime $expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+    }
+
     public function getId(): int
     {
         return $this->id;
