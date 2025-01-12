@@ -10,6 +10,8 @@
         {% for file in files %}
             <li>
                 <a href="{{ path('admin_download_file', {id: file.id}) }}">{{ file.name }}</a>
+                {{ file.downloads }}
+                {{ file.expirationDate|date('Y-m-d H:i:s') }}
                 <a href="{{ path('admin_delete_file', {id: file.id}) }}">Delete</a>
             </li>
         {% endfor %}

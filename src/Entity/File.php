@@ -16,6 +16,18 @@ class File
     #[ORM\Column(type: 'string', length: 255)]
     private string $name;
 
+    #[ORM\Column(type: 'integer')]
+    private int $downloads = 1;
+
+    #[ORM\Column(type: 'datetime')]
+    private \DateTime $expirationDate;
+
+    public function __construct()
+    {
+        $this->expirationDate = (new \DateTime())->modify('+1 day');
+    }
+
+
     // Add other properties and methods as needed
     public function setName(string $name)
     {
@@ -30,5 +42,15 @@ class File
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getDownloads(): int
+    {
+        return $this->downloads;
+    }
+
+    public function getExpirationDate(): \DateTime
+    {
+        return $this->expirationDate;
     }
 }
