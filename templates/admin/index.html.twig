@@ -9,7 +9,7 @@
     <ul>
         {% for file in files %}
             <li>
-                {{ file.name }}
+                <a href="{{ path('admin_download_file', {id: file.id}) }}">{{ file.name }}</a>
                 <a href="{{ path('admin_delete_file', {id: file.id}) }}">Delete</a>
             </li>
         {% endfor %}

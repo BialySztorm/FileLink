@@ -12,6 +12,8 @@ services:
     environment:
       - XDEBUG_MODE=debug
       - XDEBUG_CLIENT_HOST=host.docker.internal
+      - PHP_INI_UPLOAD_MAX_FILESIZE=1000M
+      - PHP_INI_POST_MAX_SIZE=1000M
     networks:
       - symfony-network
 

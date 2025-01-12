@@ -20,9 +20,27 @@ class AdminController extends AbstractController
         return $this->render('admin/index.html.twig', ['files' => $files]);
     }
 
+    #[Route('/admin/download/{id}', name: 'admin_download_file')]
+    public function download(File $file): Response
+    {
+        $filePath = $this->getParameter('uploads_directory') . '/' . $file->getName();
+
+        if (!file_exists($filePath)) {
+            throw $this->createNotFoundException('File not found');
+        }
+
+        return $this->file($filePath, $file->getName());
+    }
+
     #[Route('/admin/delete/{id}', name: 'admin_delete_file')]
     public function delete(File $file, EntityManagerInterface $em): Response
     {
+        $filePath = $this->getParameter('uploads_directory') . '/' . $file->getName();
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+
         $em->remove($file);
         $em->flush();
         return $this->redirectToRoute('admin_dashboard');
@@ -36,7 +54,6 @@ class AdminController extends AbstractController
         if ($uploadedFile) {
             $file = new File();
             $file->setName($uploadedFile->getClientOriginalName());
-            $file->setPath('/uploads/' . $uploadedFile->getClientOriginalName());
             $uploadedFile->move($this->getParameter('uploads_directory'), $uploadedFile->getClientOriginalName());
             $em->persist($file);
             $em->flush();

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class File
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(type: 'integer')]
     private int $id;
 
@@ -17,4 +17,18 @@ class File
     private string $name;
 
     // Add other properties and methods as needed
+    public function setName(string $name)
+    {
+        $this->name = $name;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
