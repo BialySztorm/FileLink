@@ -3,3 +3,23 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+admin_dashboard:
+    path: /admin
+    controller: App\Controller\AdminController::index
+
+admin_delete_file:
+    path: /admin/delete/{id}
+    controller: App\Controller\AdminController::delete
+
+admin_upload_file:
+    path: /admin/upload
+    controller: App\Controller\AdminController::upload
+
+file_upload:
+    path: /upload
+    controller: App\Controller\FileController::upload
+
+file_display:
+    path: /{id}
+    controller: App\Controller\FileController::display
