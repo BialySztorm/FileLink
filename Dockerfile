@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 LABEL authors="andrz"
 
 # Instalujemy niezbędne rozszerzenia
