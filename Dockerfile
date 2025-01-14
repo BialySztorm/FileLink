@@ -1,17 +1,24 @@
-FROM php:8.4-fpm
-LABEL authors="andrz"
+FROM php:8.4-apache
 
-# Instalujemy niezbędne rozszerzenia
-RUN docker-php-ext-install pdo_mysql
+RUN apt-get update && apt-get install -y \
+  git zip unzip libpng-dev \
+  libzip-dev default-mysql-client
 
-# Instalacja Xdebug
-# RUN pecl install xdebug-3.1.5 && docker-php-ext-enable xdebug
+RUN docker-php-ext-install pdo pdo_mysql zip gd
 
+RUN a2enmod rewrite
 
+WORKDIR /var/www
 
-# Konfiguracja Xdebug
-RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_host=host.docker.internal" >> /usr/local/etc/php/conf.d/xdebug.ini
+COPY . /var/www
 
-WORKDIR /var/www/html
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-scripts --no-autoloader
+
+EXPOSE 80
+
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' \
+  /etc/apache2/sites-available/000-default.conf
+
+CMD ["apache2-foreground"]
