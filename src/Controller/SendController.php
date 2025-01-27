@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\File;
+use App\Entity\Password;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,6 +15,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SendController extends AbstractController
 {
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[Route('/__version__', name: 'version', methods: ['GET'])]
     public function version(): JsonResponse
     {
@@ -25,16 +36,56 @@ class SendController extends AbstractController
     }
 
     #[Route('/api/delete/{id}', name: 'delete', methods: ['POST'])]
-    public function delete(int $id): JsonResponse
+    public function delete(int $id, Request $request): JsonResponse
     {
-        // TODO: Implement file deletion
+        $file = $this->entityManager->getRepository(File::class)->find($id);
+
+        if (!$file) {
+            return new JsonResponse(['message' => 'File not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if($file->getToken() != $data['owner_token'])
+        {
+            return new JsonResponse(['message' => 'Invalid token'], 403);
+        }
+
+        $this->entityManager->remove($file);
+        $this->entityManager->flush();
+
+        $password = $this->entityManager->getRepository(Password::class)->findOneBy(['file_id' => $id]);
+
+        if($password)
+        {
+            $this->entityManager->remove($password);
+            $this->entityManager->flush();
+        }
+
         return new JsonResponse(['message' => 'File deleted']);
     }
 
     #[Route('/api/password/{id}', name: 'password', methods: ['POST'])]
-    public function password(int $id): JsonResponse
+    public function password(int $id, Request $request): JsonResponse
     {
-        // TODO: Implement password protection
+        $file = $this->entityManager->getRepository(File::class)->find($id);
+
+        if (!$file) {
+            return new JsonResponse(['message' => 'File not found'], 404);
+        }
+
+        $data = json_decode($request->getContent(), true);
+
+        if($file->getToken() != $data['owner_token'])
+        {
+            return new JsonResponse(['message' => 'Invalid token'], 403);
+        }
+
+        $password = new Password();
+        $password->setPassword($data['auth']);
+        $password->setFileId($id);
+        $this->entityManager->persist($password);
+        $this->entityManager->flush();
         return new JsonResponse(['message' => 'Password set']);
     }
 

@@ -40,6 +40,31 @@ LOCK TABLES `files` WRITE;
 INSERT INTO `files` VALUES (41741,'{\"dlimit\": 1, \"timeLimit\": 86400, \"fileMetadata\": \"fXxDFC6vBZmrnLEhSx6iPXoTuVPkxxFu5HJsuIxgc6g8m8nqqfGqnZr-NHAYOAQT_ByvfEmxXzbgg_DX7i8XoGDT-jboK1nzL46y8ayzz810AWz3s9FkcGsuovYqK0zzlXuWGcTnr4-w2oQVMZoc_e5W_HSj9-_3faKpipVNmkwwmR-85jXZwA\", \"authorization\": \"send-v1 KY0V-CtM_nCzJ-rCPFIhc1mxWlgkeodaxYXJ6tZe7-x--WxLLFDIXK2daoSMR0kikwverCA5i_3sqwD4C_rGsQ\"}',_binary '™N~—“6E\áU¤N§²ø8\0\0\0\0','75812614ce7d59c7a47000685010158a');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `passwords`
+--
+
+DROP TABLE IF EXISTS `passwords`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `passwords` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `password` text NOT NULL,
+  `file_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `file_id_UNIQUE` (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `passwords`
+--
+
+LOCK TABLES `passwords` WRITE;
+/*!40000 ALTER TABLE `passwords` DISABLE KEYS */;
+/*!40000 ALTER TABLE `passwords` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -50,4 +75,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-27 18:56:04
+-- Dump completed on 2025-01-27 19:15:24
