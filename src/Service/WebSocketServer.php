@@ -12,12 +12,14 @@ class WebSocketServer implements MessageComponentInterface
     protected $clients;
     protected $fileData;
     private $entityManager;
+    private $fileService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, FileService $fileService)
     {
         $this->clients = new \SplObjectStorage();
         $this->fileData = new \SplObjectStorage();
         $this->entityManager = $entityManager;
+        $this->fileService = $fileService;
     }
 
     public function onOpen(ConnectionInterface $conn)
@@ -31,12 +33,16 @@ class WebSocketServer implements MessageComponentInterface
         if (isset($data['fileMetadata'])) {
             // Handle metadata
 //            error_log($msg);
+            $id = $this->fileService->getRandomId();
+            $token = bin2hex(random_bytes(16));
             $this->fileData[$from] = [
+                'id' => $id,
                 'metadata' => $data,
-                'buffer' => ''
+                'buffer' => '',
+                'token' => $token
             ];
             // TODO get correct metadata
-            $response = '{"ok":"true","message":"Metadata received","id":"123","ownerToken":"abc","url":"localhost/file/123"}';
+            $response = '{"ok":"true","message":"Metadata received","id":"'.$id.'","ownerToken":"'.$token.'","url":"localhost/file/'.$id.'"}';
             $from->send($response);
         } else {
             // Handle file data
@@ -46,6 +52,7 @@ class WebSocketServer implements MessageComponentInterface
                     // Save the file data
 //                    error_log('Saving ' . strlen($fileInfo['buffer']) . ' bytes');
                     $file = new File();
+                    $file->setId($fileInfo['id']);
                     $file->setMetadata($fileInfo['metadata']);
                     $file->setData($fileInfo['buffer']);
                     $this->entityManager->persist($file);

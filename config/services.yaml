@@ -22,6 +22,7 @@ services:
     App\Command\WebSocketServerCommand:
         arguments:
             $entityManager: '@doctrine.orm.entity_manager'
+            $fileService: '@App\Service\FileService'
         tags:
             - { name: 'console.command' }
 

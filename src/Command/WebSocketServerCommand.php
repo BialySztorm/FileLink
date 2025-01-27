@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\FileService;
 use App\Service\WebSocketServer;
 use Doctrine\ORM\EntityManagerInterface;
 use Ratchet\Http\HttpServer;
@@ -15,11 +16,13 @@ class WebSocketServerCommand extends Command
 {
     protected static $defaultName = 'app:websocket-server';
     private $entityManager;
+    private $fileService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, FileService $fileService)
     {
         parent::__construct();
         $this->entityManager = $entityManager;
+        $this->fileService = $fileService;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,7 +30,7 @@ class WebSocketServerCommand extends Command
         $server = IoServer::factory(
             new HttpServer(
                 new WsServer(
-                    new WebSocketServer($this->entityManager)
+                    new WebSocketServer($this->entityManager, $this->fileService)
                 )
             ),
             8080
