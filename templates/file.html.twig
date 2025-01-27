@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>File Download</title>
+</head>
+<body>
+<h1>File Download</h1>
+<p>Downloading file with ID: {{ id }}</p>
+<script>
+    {# TODO Add file download#}
+    const rawsecret = window.location.hash.substring(1); // Extract rawsecret from URL fragment
+    const ws = new WebSocket('ws://localhost:1443');
+    ws.onopen = function() {
+        ws.send(JSON.stringify({ id: {{ id }}, rawsecret: rawsecret }));
+    };
+    ws.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.message === 'File data received') {
+            // Handle file data received
+            console.log('File data received:', data);
+        }
+    };
+    ws.onerror = function(error) {
+        console.error('WebSocket error:', error);
+    };
+    ws.onclose = function() {
+        console.log('WebSocket connection closed');
+    };
+</script>
+</body>
+</html>

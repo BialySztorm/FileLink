@@ -31,7 +31,7 @@ class WebSocketServer implements MessageComponentInterface
                 'metadata' => $data,
                 'buffer' => ''
             ];
-            $response = '{"message":"Metadata received","id":"123","ownerToken":"abc","url":"localhost/api/file/123"}';
+            $response = '{"message":"Metadata received","id":"123","ownerToken":"abc","url":"localhost/file/123"}';
             $from->send($response);
         } else {
             // Handle file data
