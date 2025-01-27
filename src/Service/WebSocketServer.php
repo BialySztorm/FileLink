@@ -41,7 +41,6 @@ class WebSocketServer implements MessageComponentInterface
                 'buffer' => '',
                 'token' => $token
             ];
-            // TODO get correct metadata
             $response = '{"ok":"true","message":"Metadata received","id":"'.$id.'","ownerToken":"'.$token.'","url":"localhost/file/'.$id.'"}';
             $from->send($response);
         } else {
@@ -55,6 +54,7 @@ class WebSocketServer implements MessageComponentInterface
                     $file->setId($fileInfo['id']);
                     $file->setMetadata($fileInfo['metadata']);
                     $file->setData($fileInfo['buffer']);
+                    $file->setToken($fileInfo['token']);
                     $this->entityManager->persist($file);
                     $this->entityManager->flush();
                     $response = '{"ok":"true","message":"File data received"}';

@@ -26,8 +26,9 @@ CREATE TABLE `files` (
   `id` int NOT NULL AUTO_INCREMENT,
   `metadata` json NOT NULL,
   `data` longblob NOT NULL,
+  `token` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70089 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +37,7 @@ CREATE TABLE `files` (
 
 LOCK TABLES `files` WRITE;
 /*!40000 ALTER TABLE `files` DISABLE KEYS */;
-INSERT INTO `files` VALUES (1,'{\"dlimit\": 1, \"timeLimit\": 86400, \"fileMetadata\": \"toRXu58__NAsarHD_LHb6BHXtIla_4bvDeuR2oUPDfdRNsdF3bjIJ5rWvZ9rtp_I2dNbK4L2GRcawJFp2sRoztp9SHvPBOJpXvgChv3QLPZ3QpDy1pGIv7prXCV2o_l5BA8KaCbkJii9aA1SbXU8GMqTWnlp5Orh5xxE8BmO_8Y0xxvLyuPswA\", \"authorization\": \"send-v1 P6zYYlXXjUahRA9yJZjpSyzDWI0W_dap4TMqFNzx7ljCSQXFleqlkN97op1RYX1iyz2nic3B8fq8GI49EeJTBA\"}',_binary '\”\‹k}P\\(S1êrØù\Ù¯\0\0\0\0');
+INSERT INTO `files` VALUES (41741,'{\"dlimit\": 1, \"timeLimit\": 86400, \"fileMetadata\": \"fXxDFC6vBZmrnLEhSx6iPXoTuVPkxxFu5HJsuIxgc6g8m8nqqfGqnZr-NHAYOAQT_ByvfEmxXzbgg_DX7i8XoGDT-jboK1nzL46y8ayzz810AWz3s9FkcGsuovYqK0zzlXuWGcTnr4-w2oQVMZoc_e5W_HSj9-_3faKpipVNmkwwmR-85jXZwA\", \"authorization\": \"send-v1 KY0V-CtM_nCzJ-rCPFIhc1mxWlgkeodaxYXJ6tZe7-x--WxLLFDIXK2daoSMR0kikwverCA5i_3sqwD4C_rGsQ\"}',_binary 'ôN~óì6E\·U§Nß≤¯8\0\0\0\0','75812614ce7d59c7a47000685010158a');
 /*!40000 ALTER TABLE `files` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-01-27 17:11:49
+-- Dump completed on 2025-01-27 18:56:04

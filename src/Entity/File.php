@@ -19,6 +19,9 @@ class File
     #[ORM\Column(type: 'blob', options: ["length" => 4294967295])]
     private $data;
 
+    #[ORM\Column(type: 'text', length: 255)]
+    private $token;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +54,18 @@ class File
     public function setData($data): self
     {
         $this->data = $data;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }
