@@ -24,7 +24,7 @@ class SendController extends AbstractController
         return new RedirectResponse('ws://localhost:8081/api/ws');
     }
 
-    #[Route('/api/delete/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route('/api/delete/{id}', name: 'delete', methods: ['POST'])]
     public function delete(int $id): JsonResponse
     {
         // TODO: Implement file deletion
