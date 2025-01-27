@@ -2,18 +2,22 @@
 
 namespace App\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use App\Entity\File;
 
 class WebSocketServer implements MessageComponentInterface
 {
     protected $clients;
     protected $fileData;
+    private $entityManager;
 
-    public function __construct()
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->clients = new \SplObjectStorage();
         $this->fileData = new \SplObjectStorage();
+        $this->entityManager = $entityManager;
     }
 
     public function onOpen(ConnectionInterface $conn)
@@ -31,6 +35,7 @@ class WebSocketServer implements MessageComponentInterface
                 'metadata' => $data,
                 'buffer' => ''
             ];
+            // TODO get correct metadata
             $response = '{"ok":"true","message":"Metadata received","id":"123","ownerToken":"abc","url":"localhost/file/123"}';
             $from->send($response);
         } else {
@@ -40,7 +45,11 @@ class WebSocketServer implements MessageComponentInterface
                 if ($msg === "\0") { // EOF signal
                     // Save the file data
 //                    error_log('Saving ' . strlen($fileInfo['buffer']) . ' bytes');
-                    // TODO Save to database
+                    $file = new File();
+                    $file->setMetadata($fileInfo['metadata']);
+                    $file->setData($fileInfo['buffer']);
+                    $this->entityManager->persist($file);
+                    $this->entityManager->flush();
                     $response = '{"ok":"true","message":"File data received"}';
                     $from->send($response);
                     unset($this->fileData[$from]);
@@ -52,7 +61,7 @@ class WebSocketServer implements MessageComponentInterface
                 }
             } else {
                 error_log('Metadata not received');
-                $from->send('{"Error":"Metadata not received"}');
+                $from->send('{"error":"Metadata not received"}');
             }
         }
     }
@@ -65,7 +74,7 @@ class WebSocketServer implements MessageComponentInterface
 
     public function onError(ConnectionInterface $conn, \Exception $e)
     {
-        $conn->send('{"error":"' . $e->getMessage() . '"}');
+        $conn->send('{"error":"' . str_replace('"', "'", str_replace("\\", "/", $e->getMessage())) . '"}');
         $conn->close();
     }
 }

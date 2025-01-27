@@ -20,6 +20,8 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
     App\Command\WebSocketServerCommand:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
         tags:
             - { name: 'console.command' }
 
