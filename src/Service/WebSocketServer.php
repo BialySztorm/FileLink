@@ -31,7 +31,8 @@ class WebSocketServer implements MessageComponentInterface
                 'metadata' => $data,
                 'buffer' => ''
             ];
-            $from->send('{"message":"Metadata received"}');
+            $response = '{"message":"Metadata received","id":"123","ownerToken":"abc","url":"localhost/api/file/123"}';
+            $from->send($response);
         } else {
             // Handle file data
             if (isset($this->fileData[$from])) {
@@ -40,7 +41,8 @@ class WebSocketServer implements MessageComponentInterface
                     // Save the file data
 //                    error_log('Saving ' . strlen($fileInfo['buffer']) . ' bytes');
                     // TODO Save to database
-                    $from->send('{"message":"File data received"}');
+                    $response = '{"message":"File data received"}';
+                    $from->send($response);
                     unset($this->fileData[$from]);
                 } else {
                     // Append data to buffer
