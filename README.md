@@ -25,7 +25,7 @@ The PHP server and MySQL database are running in a **Docker** environment, ensur
 
 1. **Clone the repository**
    ```sh
-   git clone https://github.com/user/FileLink-POLSL.git
+   git clone https://github.com/BialySztorm/FileLink.git
    cd FileLink-POLSL
    ```
 
