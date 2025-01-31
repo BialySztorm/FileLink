@@ -39,6 +39,10 @@ The PHP server and MySQL database are running in a **Docker** environment, ensur
    docker-compose up -d
    ```
 
+## Configuration
+
+The project docker test runs on HTTP and WebSocket on port 1443. For proper operation, ensure these settings are also configured in filelinkSend.
+
 ## Architecture
 
 - **Backend:** Symfony (PHP)
